@@ -2,6 +2,7 @@
 #define INSTRUCTION_H
 #include <iostream>
 #include <string>
+#include <chrono>
 using namespace std;
 class Instruction
 {

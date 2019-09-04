@@ -38,11 +38,13 @@ void Instruction::setAddress(string value)
 
 void Instruction::generateType(int write, int read, int process)
 {
+    int seed = std::chrono::steady_clock::now().time_since_epoch().count();
+    srand(seed);
     int value = rand() % 60;
-    if(value <=20){
+    if(value <=30){
         this->type = "write";
     }
-    else if(value <=40){
+    else if(value <=50){
         this->type = "read";
     }
     else{
@@ -54,5 +56,6 @@ void Instruction::generateType(int write, int read, int process)
         binTag=(tag%2==0 ?"0":"1")+binTag;
         tag/=2;
     }
-    this->tag = binTag;s
+    this->tag = binTag;
+    this->data = to_string(value);
 }

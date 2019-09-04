@@ -13,8 +13,11 @@ public:
     CPUNode *cpu;
     Memory *memory;
     BusCache *busCache;
+    //Bus de la ram es especifico para cada procesador
     BusRAM busRam;
-
+    bool *state;
+    QMutex *mutex;
+//If i want to access memory or cache bus and someone else has the access, then i stall the instruction until i have access
 signals:
     void output(string,string);
 protected:

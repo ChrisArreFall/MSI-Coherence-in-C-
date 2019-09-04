@@ -5,17 +5,19 @@
 
 struct BusRAM
 {
+    BusRAM() : tag("XXXX"), data("000000"),action("null"), enabled(false){}
     string tag;
-    string action; //write, read
-    string status;
     string data;
-    bool enabled=false;
+    string action; //write, read
+    bool enabled;
 };
 
 struct BusCache
 {
+    BusCache() : tag("XXXX"), status("null"), cpuId(-1) {}
     string tag;
     string status;
+    int cpuId;
 };
 
 class CacheController
@@ -23,9 +25,20 @@ class CacheController
 public:
     CacheController();
 
-    void cacheWrite(string tag, string data);
+    string cacheWrite(string tag, string data);
     string cacheRead(string tag);
-    void changeStatus(string tag,string status);
+    string hearCacheBus(BusCache *busCache);
+    Cache *getCache() const;
+    void setCache(Cache *value);
+
+    BusCache *getBusCache() const;
+    void setBusCache(BusCache *value);
+
+    BusRAM *getBusRAM() const;
+    void setBusRAM(BusRAM *value);
+
+    string printCache();
+
 private:
     Cache *cache;
     BusCache *busCache;

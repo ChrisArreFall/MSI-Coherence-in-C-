@@ -19,7 +19,7 @@ public:
     void init(int id);
 
     //Los tres tipos de instruccion
-    void write(string data,string tag);
+    string write(string data,string tag);
     string read(string tag);
     void process();
 
@@ -31,15 +31,17 @@ public:
     //Obtiene el status del bus que conecta con la RAM de la instancia del procesador
     BusRAM getBusRAM() const;
     //Se le da un valor al bus de la RAM
-    void setBusRAM(const BusRAM &value);
+    void setBusRAM(BusRAM *value);
 
     //Obtiene el status del bus del Cache de la instancia del procesador
     BusCache getBusCache() const;
     //Se le da un valor al bus de el Cache
-    void setBusCache(const BusCache &value);
+    void setBusCache(BusCache *value);
 
     Instruction getCurrentInstruction();
 
+
+    CacheController getCacheController() const;
 
 private:
     int id;

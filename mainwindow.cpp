@@ -29,31 +29,41 @@ MainWindow::MainWindow(QWidget *parent) :
     threadCPU1->memory=&memory;
     threadCPU2->memory=&memory;
     threadCPU3->memory=&memory;
+    //Reference mutex
+    threadCPU0->mutex=&mutex;
+    threadCPU1->mutex=&mutex;
+    threadCPU2->mutex=&mutex;
+    threadCPU3->mutex=&mutex;
     //Reference cache bus to CPUs
     threadCPU0->busCache=&busCache;
     threadCPU1->busCache=&busCache;
     threadCPU2->busCache=&busCache;
     threadCPU3->busCache=&busCache;
+    //processor state (general)
+    threadCPU0->state=&state;
+    threadCPU1->state=&state;
+    threadCPU2->state=&state;
+    threadCPU3->state=&state;
     //start processors
     threadCPU0->start();
-    threadCPU1->start();
-    threadCPU2->start();
-    threadCPU3->start();
+    //threadCPU1->start();
+    //threadCPU2->start();
+    //threadCPU3->start();
     connect(threadCPU0,&ThreadCPU::output,[&](string outputCPU,string outputCache){
         ui->textCPU0->append(QString::fromStdString(outputCPU));
-        ui->cache0->setText(QString::fromStdString(outputCache));
+        //ui->textCache0->setText(QString::fromStdString(outputCache));
     });
     connect(threadCPU1,&ThreadCPU::output,[&](string outputCPU,string outputCache){
         ui->textCPU1->append(QString::fromStdString(outputCPU));
-        ui->cache1->setText(QString::fromStdString(outputCache));
+        //ui->textCache1->setText(QString::fromStdString(outputCache));
     });
     connect(threadCPU2,&ThreadCPU::output,[&](string outputCPU,string outputCache){
         ui->textCPU2->append(QString::fromStdString(outputCPU));
-        ui->cache2->setText(QString::fromStdString(outputCache));
+        //ui->textCache2->setText(QString::fromStdString(outputCache));
     });
     connect(threadCPU3,&ThreadCPU::output,[&](string outputCPU,string outputCache){
         ui->textCPU3->append(QString::fromStdString(outputCPU));
-        ui->cache3->setText(QString::fromStdString(outputCache));
+        //ui->textCache3->setText(QString::fromStdString(outputCache));
     });
 
 }

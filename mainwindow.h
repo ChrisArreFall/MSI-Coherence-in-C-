@@ -31,6 +31,10 @@ private:
     BusCache busCache;
 
     ThreadCPU *threadCPU0,*threadCPU1,*threadCPU2,*threadCPU3;
+
+    bool state=true;
+
+    QMutex mutex;
 };
 
 #endif // MAINWINDOW_H
