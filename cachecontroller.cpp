@@ -17,6 +17,7 @@ string CacheController::cacheWrite(string tag, string data)
                 //std::cout << "Modified..." << std::endl;
                 //If it is in the modified state, we can be sure no other processor has the tag in their cache
                 //that means we dont have to tell any other processors and we dont have to do anything.
+                this->cache->memory[i].data=data;
                 return "foundModified";
             }
             else if (this->cache->memory[i].state=="invalid") {
@@ -56,9 +57,17 @@ string CacheController::cacheWrite(string tag, string data)
     this->busCache->status = "write";
     this->busCache->cpuId = this->cache->cpuId;
 
-
     //we put the tag in the cache in a random place
-    int pos = rand()%8;
+    std::normal_distribution<double> distributionTag(8,8);
+    int pos = (int)abs(distributionTag(generator));
+    while(pos>=8){
+        pos = (int)abs(distributionTag(generator));
+    }
+    if(cache->memory[pos].state=="modified"){
+        //Emergency case
+        this->memory->writeBlock(cache->memory[pos].tag,cache->memory[pos].data);
+        std::cout << "Pos in modified state! : "<<pos << std::endl;
+    }
     std::cout << "Putting in cache in pos: "<< pos << std::endl;
     this->cache->memory[pos].state="modified";
     this->cache->memory[pos].data=data;

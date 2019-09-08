@@ -25,7 +25,7 @@ void ThreadCPU::run()
 
 
 
-
+    int iter = 0;
     while(true){
         while(state){
             mutex->lock();
@@ -87,28 +87,32 @@ void ThreadCPU::run()
 
 
                 string outputInstruction = "";
+                string stat = "";
+                string outputCPU = "";
 
                 if(type=="write"){
                     mutex->lock();
-                    outputInstruction=cpu->write(data,tag);
+                    stat=outputInstruction=cpu->write(data,tag);
                     mutex->unlock();
-                    msleep(100);
+                    outputCPU =  to_string(id) + "1" + to_string(iter)+ " T:" + type + ", Data: " + data + ", Tag: " + tag + " S: " + stat + "\n";
+                    msleep(2000);
                 }
 
 
                 else if(type=="read"){
                     mutex->lock();
-                    outputInstruction=cpu->read(tag);
+                    stat=outputInstruction=cpu->read(tag);
                     mutex->unlock();
-                    msleep(100);
+                    outputCPU =  to_string(id) + "1" + to_string(iter)+ " T:" + type +", " + tag + " S: " + stat + "\n";
+                    msleep(2000);
                 }
                 else{
                     cpu->process();
-                    msleep(200);
+                    outputCPU =  to_string(id) + "1" + to_string(iter)+ " T:" + type + "\n";
+                    msleep(3000);
                 }
 
                 string outputCache = to_string(id)+"0"+this->cpu->cacheController.printCache();
-                string outputCPU = to_string(id) + "1" + "Type:" + type + ", Data: " + data + ", Tag: " + tag + "\n";
 
                 mutex->lock();
                 emit signalGUI(QString::fromStdString(outputCPU));
@@ -118,7 +122,7 @@ void ThreadCPU::run()
                 emit signalGUI(QString::fromStdString(memory->printMemory()));
                 mutex->unlock();
 
-
+                iter++;
 
             }
             else{

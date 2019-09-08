@@ -33,7 +33,9 @@ string CPUNode::write(string data, string tag)
 }
 string CPUNode::read(string tag)
 {
-    if(cacheController.cacheRead(tag)=="foundInvalid" || cacheController.cacheRead(tag)=="notFound"){
+    string status = cacheController.cacheRead(tag);
+    cout <<"STATUS: "<< status << endl;
+    if(status=="foundInvalid" || status=="notFound"){
         return "Miss";
     }
     else{
