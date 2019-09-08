@@ -1,9 +1,10 @@
 #include "instruction.h"
 
+
+
 Instruction::Instruction()
 {
-    int write=0,read=0,process=0;
-    generateType(write,read,process);
+
 }
 
 string Instruction::getType() const
@@ -36,25 +37,32 @@ void Instruction::setAddress(string value)
     tag = value;
 }
 
-void Instruction::generateType(int write, int read, int process)
+
+
+
+void Instruction::generateType(int value, int tag)
 {
-    int seed = std::chrono::steady_clock::now().time_since_epoch().count();
-    srand(seed);
-    int value = rand() % 60;
-    if(value <=30){
+
+    if(value <=34){
         this->type = "write";
     }
-    else if(value <=50){
+    else if(value <=67){
         this->type = "read";
     }
     else{
         this->type = "process";
     }
-    int tag = rand() % 16;
-    string binTag;
-    while(tag!=0) {
-        binTag=(tag%2==0 ?"0":"1")+binTag;
-        tag/=2;
+
+
+    string binTag="";
+    if(tag==0){
+        binTag = "0000";
+    }
+    else{
+        while(binTag.length()<4) {
+            binTag=(tag%2==0 ?"0":"1")+binTag;
+            tag/=2;
+        }
     }
     this->tag = binTag;
     this->data = to_string(value);

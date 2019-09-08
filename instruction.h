@@ -3,11 +3,14 @@
 #include <iostream>
 #include <string>
 #include <chrono>
+#include <random>
 using namespace std;
 class Instruction
 {
 public:
     Instruction();
+
+
     string getType() const;
     void setType(const string &value);
 
@@ -17,7 +20,12 @@ public:
     string getAddress() const;
     void setAddress(string value);
 
-    void generateType(int write,int read,int process);
+    void generateType(int value, int tag);
+
+
+
+    int instructionType;
+    int tagValue;
 
 private:
     string type;// write, read, process

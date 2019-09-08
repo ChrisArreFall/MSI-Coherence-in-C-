@@ -2,14 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "cpuNode.h"
-#include "memory.h"
-#include <thread>
-#include <list>
-#include <algorithm>
-#include <mutex>
-#include <chrono>
-#include "threadcpu.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -23,18 +16,22 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     Ui::MainWindow *ui;
+signals:
+   void signalMean(int);
+   void signalVar(int);
+   void signalStatus();
+public slots:
+    void setText(const QString &string);
+private slots:
+    void on_meanSlider_sliderMoved(int position);
+
+    void on_varSlider_sliderMoved(int position);
+
+    void on_startButton_clicked();
 
 private:
-    CPUNode cpu0,cpu1,cpu2,cpu3;
-    Memory memory;
-    //Bus de la cache es uno para todos los nodes
-    BusCache busCache;
 
-    ThreadCPU *threadCPU0,*threadCPU1,*threadCPU2,*threadCPU3;
 
-    bool state=true;
-
-    QMutex mutex;
 };
 
 #endif // MAINWINDOW_H

@@ -1,6 +1,9 @@
 #ifndef CACHECONTROLLER_H
 #define CACHECONTROLLER_H
 #include "cache.h"
+#include "instruction.h"
+#include "memory.h"
+#include <QMutex>
 
 
 struct BusRAM
@@ -38,6 +41,13 @@ public:
     void setBusRAM(BusRAM *value);
 
     string printCache();
+
+    std::default_random_engine generator;
+
+    QMutex *mutex;
+
+    Memory *memory;
+
 
 private:
     Cache *cache;

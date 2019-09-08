@@ -15,14 +15,20 @@ public:
     BusCache *busCache;
     //Bus de la ram es especifico para cada procesador
     BusRAM busRam;
-    bool *state;
+    bool state;
     QMutex *mutex;
-//If i want to access memory or cache bus and someone else has the access, then i stall the instruction until i have access
+
+    int mean, variance;
+    bool *clk;
 signals:
-    void output(string,string);
+   void signalGUI(QString);
+
+public slots:
+    void setMean(const int &value);
+    void setVar(const int &value);
+    void setState();
 protected:
     void run();
 };
-//Hacer el bus un puntero de una variable que se llame busDatos y otra busSnoop
 
 #endif // THREADCPU_H

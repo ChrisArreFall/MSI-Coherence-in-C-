@@ -38,21 +38,25 @@ public:
     //Se le da un valor al bus de el Cache
     void setBusCache(BusCache *value);
 
-    Instruction getCurrentInstruction();
 
 
-    CacheController getCacheController() const;
+    CacheController cacheController;
 
+    QMutex *mutex;
+
+    bool clock;
 private:
     int id;
     Cache cache;
-    CacheController cacheController;
+
     Instruction instruction;
     BusCache *busCache;
     BusRAM *busRAM;
     bool writeBack = false;
     bool invalidation = false;
     bool readBack = false;
+
+
 };
 
 #endif // CPU_H

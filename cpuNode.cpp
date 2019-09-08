@@ -76,16 +76,7 @@ void CPUNode::setBusCache(BusCache *value)
     this->busCache = value;
     cacheController.setBusCache(busCache);
 }
-// Get instruction
-Instruction CPUNode::getCurrentInstruction()
-{
-    return this->instruction;
-}
-//Get cache controller
-CacheController CPUNode::getCacheController() const
-{
-    return cacheController;
-}
+
 
 
 

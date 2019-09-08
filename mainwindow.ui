@@ -6,46 +6,147 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1124</width>
-    <height>394</height>
+    <width>1238</width>
+    <height>632</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="gridLayoutWidget">
+   <widget class="QWidget" name="gridLayoutWidget_2">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>1101</width>
-      <height>331</height>
+      <width>1211</width>
+      <height>561</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="1" column="2">
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="3" column="5">
+      <widget class="QTextEdit" name="textCache2">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>160</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="7">
+      <widget class="QTextEdit" name="textCPU3">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="8">
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="3" column="0">
+        <widget class="QSlider" name="varSlider">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+         <property name="value">
+          <number>100</number>
+         </property>
+         <property name="sliderPosition">
+          <number>100</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QSlider" name="meanSlider">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+         <property name="sliderPosition">
+          <number>50</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>   1                     2                     3 </string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Write             Read          Process</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" alignment="Qt::AlignHCenter">
+        <widget class="QPushButton" name="startButton">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Start</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="processPerc_15">
+       <property name="text">
+        <string>CPU1</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QTextEdit" name="textCPU0">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
       <widget class="QTextEdit" name="textCPU1">
        <property name="readOnly">
         <bool>true</bool>
        </property>
       </widget>
      </item>
-     <item row="1" column="4">
-      <widget class="QTextEdit" name="textCPU2">
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="5">
-      <widget class="QTextEdit" name="textCache2">
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="7">
+     <item row="2" column="7">
       <widget class="QLabel" name="processPerc_20">
        <property name="text">
         <string>Cache3</string>
@@ -55,7 +156,76 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
+     <item row="3" column="3">
+      <widget class="QTextEdit" name="textCache1">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>160</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="5">
+      <widget class="QLabel" name="processPerc_18">
+       <property name="text">
+        <string>Cache2</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="processPerc_14">
+       <property name="text">
+        <string>Cache0</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="8">
+      <widget class="QTextEdit" name="textMemory">
+       <property name="maximumSize">
+        <size>
+         <width>200</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="7">
+      <widget class="QLabel" name="processPerc_19">
+       <property name="text">
+        <string>CPU3</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QTextEdit" name="textCache0">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>160</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="3">
       <widget class="QLabel" name="processPerc_16">
        <property name="text">
         <string>Cache1</string>
@@ -64,69 +234,6 @@
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-     </item>
-     <item row="2" column="2" colspan="2">
-      <layout class="QFormLayout" name="formLayout_4">
-       <item row="0" column="0">
-        <widget class="QLabel" name="processPerc_4">
-         <property name="text">
-          <string>Process</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QSlider" name="slideProcess1">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="3" column="0" colspan="2">
-      <layout class="QFormLayout" name="formLayout_2">
-       <item row="0" column="0">
-        <widget class="QLabel" name="writePerc">
-         <property name="text">
-          <string>Write</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QSlider" name="slideWrite0">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="2" column="0" colspan="2">
-      <layout class="QFormLayout" name="formLayout">
-       <item row="0" column="1">
-        <widget class="QSlider" name="slideProcess0">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="processPerc">
-         <property name="text">
-          <string>Process</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
      </item>
      <item row="0" column="8">
       <widget class="QLabel" name="processPerc_21">
@@ -138,219 +245,7 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="2" colspan="2">
-      <layout class="QFormLayout" name="formLayout_5">
-       <item row="0" column="0">
-        <widget class="QLabel" name="processPerc_5">
-         <property name="text">
-          <string>Write</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QSlider" name="slideWrite1">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="2" column="4" colspan="2">
-      <layout class="QFormLayout" name="formLayout_7">
-       <item row="0" column="0">
-        <widget class="QLabel" name="processPerc_7">
-         <property name="text">
-          <string>Process</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QSlider" name="slideProcess2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="1" column="0">
-      <widget class="QTextEdit" name="textCPU0">
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="2" colspan="2">
-      <layout class="QFormLayout" name="formLayout_6">
-       <item row="0" column="0">
-        <widget class="QLabel" name="processPerc_6">
-         <property name="text">
-          <string>Read</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QSlider" name="slideRead1">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="processPerc_15">
-       <property name="text">
-        <string>CPU1</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="4" colspan="2">
-      <layout class="QFormLayout" name="formLayout_8">
-       <item row="0" column="0">
-        <widget class="QLabel" name="processPerc_8">
-         <property name="text">
-          <string>Write</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QSlider" name="slideWrite2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="2" column="6" colspan="2">
-      <layout class="QFormLayout" name="formLayout_10">
-       <item row="0" column="0">
-        <widget class="QLabel" name="processPerc_10">
-         <property name="text">
-          <string>Process</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QSlider" name="slideProcess3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="4" column="6" colspan="2">
-      <layout class="QFormLayout" name="formLayout_12">
-       <item row="0" column="0">
-        <widget class="QLabel" name="processPerc_12">
-         <property name="text">
-          <string>Read</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QSlider" name="slideRead3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="1" column="6">
-      <widget class="QTextEdit" name="textCPU3">
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="6" colspan="2">
-      <layout class="QFormLayout" name="formLayout_11">
-       <item row="0" column="0">
-        <widget class="QLabel" name="processPerc_11">
-         <property name="text">
-          <string>Write</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QSlider" name="slideWrite3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="0" column="6">
-      <widget class="QLabel" name="processPerc_19">
-       <property name="text">
-        <string>CPU3</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0" colspan="2">
-      <layout class="QFormLayout" name="formLayout_3">
-       <item row="0" column="0">
-        <widget class="QLabel" name="readPerc">
-         <property name="text">
-          <string>Read</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QSlider" name="slideRead0">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
      <item row="0" column="5">
-      <widget class="QLabel" name="processPerc_18">
-       <property name="text">
-        <string>Cache2</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
       <widget class="QLabel" name="processPerc_17">
        <property name="text">
         <string>CPU2</string>
@@ -360,72 +255,33 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="8" rowspan="4">
-      <widget class="QTextEdit" name="memoria">
+     <item row="1" column="5">
+      <widget class="QTextEdit" name="textCPU2">
        <property name="readOnly">
         <bool>true</bool>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
+     <item row="3" column="7">
+      <widget class="QTextEdit" name="textCache3">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>160</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
       <widget class="QLabel" name="processPerc_13">
        <property name="text">
         <string>CPU0</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QTextEdit" name="textCache1">
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="4" colspan="2">
-      <layout class="QFormLayout" name="formLayout_9">
-       <item row="0" column="0">
-        <widget class="QLabel" name="processPerc_9">
-         <property name="text">
-          <string>Read</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QSlider" name="slideRead2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="processPerc_14">
-       <property name="text">
-        <string>Cache0</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="7">
-      <widget class="QTextEdit" name="textCache3">
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QTextEdit" name="textCache0">
-       <property name="readOnly">
-        <bool>true</bool>
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -437,7 +293,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1124</width>
+     <width>1238</width>
      <height>22</height>
     </rect>
    </property>

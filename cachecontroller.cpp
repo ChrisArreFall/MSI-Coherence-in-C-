@@ -2,7 +2,6 @@
 
 CacheController::CacheController()
 {
-
 }
 
 string CacheController::cacheWrite(string tag, string data)
@@ -104,7 +103,17 @@ string CacheController::cacheRead(string tag)
     this->busRAM->tag = tag;
     this->busRAM->action = "read";
     //we put the tag in the cache in a random place
-    int pos = rand()%8;
+    std::normal_distribution<double> distributionTag(8,8);
+    int pos = (int)abs(distributionTag(generator));
+    while(pos>=8){
+        pos = (int)abs(distributionTag(generator));
+        std::cout << "Stuck here!" << std::endl;
+    }
+    if(cache->memory[pos].state=="modified"){
+        //Emergency case
+        this->memory->writeBlock(cache->memory[pos].tag,cache->memory[pos].data);
+        std::cout << "Pos in modified state! : "<<pos << std::endl;
+    }
     this->cache->memory[pos].tag = tag;
     this->cache->memory[pos].state = "shared";
 
@@ -219,7 +228,7 @@ string CacheController::printCache()
 {
     string output;
     for(int i = 0;i<CACHE_SIZE;i++){
-        output.append("tag:"+ this->cache->memory[i].tag + ", data:" + this->cache->memory[i].data + ", State:" + this->cache->memory[i].state + "\n");
+        output.append("Tag: "+ this->cache->memory[i].tag + ", Data: " + this->cache->memory[i].data + ", State: " + this->cache->memory[i].state + "\n");
     }
     return output;
 }
