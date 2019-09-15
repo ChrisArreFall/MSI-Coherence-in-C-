@@ -12,16 +12,20 @@ void ThreadCPU::accessMemory(){
         //if we need to write, we proceed to do that
         if(busRam.action=="write"){
             this->memory->writeBlock(busRam.tag,busRam.data);
+            emit signalGUI(QString::fromStdString(memory->printMemory()));
             //std::cout << "Writting to memory..." << std::endl;
         }
         //if we need to read, we proceed to do that
         else if (busRam.action=="read") {
             //we look for that tag in our cache and rewrite the data with one in memory
             for(int i =0; i<CACHE_SIZE;i++){
-                std::cout << "Reading from memory..." << std::endl;
-                if(this->cpu->getCache().memory[i].tag==busRam.tag){
+                if(this->cpu->cache.memory[i].tag==busRam.tag){
+                    std::cout << "Reading from memory..." << std::endl;
                     this->cpu->cache.memory[i].data=memory->getData(busRam.tag);
                     std::cout << "Obtained data: "<< memory->getData(busRam.tag)<< std::endl;
+                    //Print everything again
+                    string outputCache = to_string(this->cpu->id)+"0"+this->cpu->cacheController.printCache();
+                    emit signalGUI(QString::fromStdString(outputCache));
                 }
             }
         }
@@ -31,7 +35,7 @@ void ThreadCPU::accessMemory(){
 
 void ThreadCPU::executeInstruction(int iter,string type, string data, string tag){
     //finally we process our next instruction
-    // instance of class std::normal_distribution with specific mean and stddev
+    // instance of class std::normal_distribution with specific mean and dev
     string outputInstruction = "";
     string stat = "";
     string outputCPU = "";
@@ -41,7 +45,6 @@ void ThreadCPU::executeInstruction(int iter,string type, string data, string tag
         outputCPU =  to_string(id) + "1" + to_string(iter)+ " T:" + type + ", Data: " + data + ", Tag: " + tag + " S: " + stat + "\n";
         //msleep(2000);
     }
-
 
     else if(type=="read"){
         stat=outputInstruction=cpu->read(id,tag);
@@ -83,7 +86,6 @@ void ThreadCPU::run()
         if(clk){
             mutex->lock();
             cout  << " ---------------------- "<< id<<" ------------------------"<< endl;
-            accessMemory();
             std::normal_distribution<double> d(mean, variance);
             int randValue = (int)d(gen)%100;
             std::normal_distribution<double> d2(8, 8);
@@ -99,6 +101,7 @@ void ThreadCPU::run()
                 cout << "Change in cache bus: " << cpu->cacheController.busCacheMessage.tag <<", " << cpu->cacheController.busCacheMessage.status << endl;
                 emit signalWriteToBus(cpu->cacheController.busCacheMessage);
             }
+            accessMemory();
             cout  << " -------------------------------------------------"<< endl;
             mutex->unlock();
             iter++;
@@ -106,6 +109,7 @@ void ThreadCPU::run()
         }
     }
 }
+
 // direccion modulo 8
 
 void ThreadCPU::setMean(const int &value){
