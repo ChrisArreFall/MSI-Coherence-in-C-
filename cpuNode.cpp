@@ -5,7 +5,7 @@ CPUNode::CPUNode()
     this->id = 100;
     cacheController.setCache(&cache);
     cacheController.setBusRAM(busRAM);
-    cacheController.setBusCache(busCache);
+    //cacheController.setBusCacheMessage(busCacheMessage);
 }
 
 int CPUNode::getId() const
@@ -16,10 +16,11 @@ int CPUNode::getId() const
 void CPUNode::init(int id)
 {
     this->id=id;
+    this->cache.cpuId=id;
 
 }
 //--------------Seccion Instrucciones----------------
-string CPUNode::write(string data, string tag)
+string CPUNode::write(int data, string tag)
 {
     std::cout << "Write Data: "<< data <<",Tag: "<<tag  << std::endl;
     string result = cacheController.cacheWrite(tag,data);
@@ -31,9 +32,9 @@ string CPUNode::write(string data, string tag)
         return "Hit";
     }
 }
-string CPUNode::read(string tag)
+string CPUNode::read(int data,string tag)
 {
-    string status = cacheController.cacheRead(tag);
+    string status = cacheController.cacheRead(tag,data);
     cout <<"STATUS: "<< status << endl;
     if(status=="foundInvalid" || status=="notFound"){
         return "Miss";
@@ -67,18 +68,6 @@ void CPUNode::setBusRAM(BusRAM *value)
     this->busRAM = value;
     cacheController.setBusRAM(busRAM);
 }
-//--------------Seccion Manejo bus Cache----------------
-BusCache CPUNode::getBusCache() const
-{
-    return *busCache;
-}
-
-void CPUNode::setBusCache(BusCache *value)
-{
-    this->busCache = value;
-    cacheController.setBusCache(busCache);
-}
-
 
 
 

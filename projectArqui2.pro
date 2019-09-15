@@ -32,6 +32,7 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         memory.cpp \
+        threadbuscache.cpp \
         threadclk.cpp \
         threadcpu.cpp
 
@@ -42,6 +43,7 @@ HEADERS += \
         instruction.h \
         mainwindow.h \
         memory.h \
+        threadbuscache.h \
         threadclk.h \
         threadcpu.h
 

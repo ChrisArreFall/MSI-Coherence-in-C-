@@ -6,7 +6,7 @@
 using namespace std;
 struct CacheBlock
 {
-   CacheBlock() : tag("XXXX"), data("00000"), state("invalid"){}
+   CacheBlock() : tag("XXXX"), data("XXXX"), state("invalid"){}
    string tag;     //identificador del bloque
    string data;    //datos del bloque
    string state;   //invalid, shared, modified

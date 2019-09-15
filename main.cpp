@@ -11,7 +11,9 @@
 #include "threadclk.h"
 #include "threadcpu.h"
 #include "instruction.h"
+#include "threadbuscache.h"
 #include <iostream>
+#include "cachecontroller.h"
 
 
 
@@ -25,11 +27,12 @@ int main(int argc, char *argv[])
     CPUNode cpu0,cpu1,cpu2,cpu3;
     Memory memory;
     //Bus de la cache es uno para todos los nodes
-    BusCache busCache;
 
     ThreadCPU *threadCPU0,*threadCPU1,*threadCPU2,*threadCPU3;
     ThreadCLK *threadCLK;
+    ThreadBusCache *threadBusCache;
 
+    qRegisterMetaType<BusCacheMessage>("BusCacheMessage");
 
     QMutex mutex;
 
@@ -44,6 +47,7 @@ int main(int argc, char *argv[])
     threadCPU2 = new ThreadCPU();
     threadCPU3 = new ThreadCPU();
     threadCLK = new ThreadCLK();
+    threadBusCache = new ThreadBusCache();
     //Assign a processor to each thread
     threadCPU0->cpu=&cpu0;
     threadCPU1->cpu=&cpu1;
@@ -60,23 +64,14 @@ int main(int argc, char *argv[])
     threadCPU2->mutex=&mutex;
     threadCPU3->mutex=&mutex;
     threadCLK->mutex = &mutex;
-    //Reference cache bus to CPUs
-    threadCPU0->busCache=&busCache;
-    threadCPU1->busCache=&busCache;
-    threadCPU2->busCache=&busCache;
-    threadCPU3->busCache=&busCache;
     //processor mutex
     threadCPU0->mutex=&mutex;
     threadCPU1->mutex=&mutex;
     threadCPU2->mutex=&mutex;
     threadCPU3->mutex=&mutex;
-    //processor clk
-    threadCPU0->clk=&threadCLK->clk0;
-    threadCPU1->clk=&threadCLK->clk1;
-    threadCPU2->clk=&threadCLK->clk2;
-    threadCPU3->clk=&threadCLK->clk3;
     //start processors
     threadCLK->start();
+    threadBusCache->start();
     threadCPU0->start();
     threadCPU1->start();
     threadCPU2->start();
@@ -97,10 +92,22 @@ int main(int argc, char *argv[])
     QObject::connect(&w,SIGNAL(signalVar(const int&)),threadCPU2,SLOT(setVar(const int&)));
     QObject::connect(&w,SIGNAL(signalVar(const int&)),threadCPU3,SLOT(setVar(const int&)));
 
-    QObject::connect(&w,SIGNAL(signalStatus()),threadCPU0,SLOT(setState()));
-    QObject::connect(&w,SIGNAL(signalStatus()),threadCPU1,SLOT(setState()));
-    QObject::connect(&w,SIGNAL(signalStatus()),threadCPU2,SLOT(setState()));
-    QObject::connect(&w,SIGNAL(signalStatus()),threadCPU3,SLOT(setState()));
+    QObject::connect(threadCLK,SIGNAL(signalCLK(bool)),threadCPU0,SLOT(setCLK(bool)));
+    QObject::connect(threadCLK,SIGNAL(signalCLK(bool)),threadCPU1,SLOT(setCLK(bool)));
+    QObject::connect(threadCLK,SIGNAL(signalCLK(bool)),threadCPU2,SLOT(setCLK(bool)));
+    QObject::connect(threadCLK,SIGNAL(signalCLK(bool)),threadCPU3,SLOT(setCLK(bool)));
+
+    QObject::connect(&w,SIGNAL(setState()),threadCLK,SLOT(setState()));
+
+    QObject::connect(threadCPU0,SIGNAL(signalWriteToBus(BusCacheMessage)),threadBusCache,SLOT(setBusCacheChange(BusCacheMessage)));
+    QObject::connect(threadCPU1,SIGNAL(signalWriteToBus(BusCacheMessage)),threadBusCache,SLOT(setBusCacheChange(BusCacheMessage)));
+    QObject::connect(threadCPU2,SIGNAL(signalWriteToBus(BusCacheMessage)),threadBusCache,SLOT(setBusCacheChange(BusCacheMessage)));
+    QObject::connect(threadCPU3,SIGNAL(signalWriteToBus(BusCacheMessage)),threadBusCache,SLOT(setBusCacheChange(BusCacheMessage)));
+
+    QObject::connect(threadBusCache,SIGNAL(signalBusCacheChange(BusCacheMessage)),threadCPU0,SLOT(hearBusCache(BusCacheMessage)));
+    QObject::connect(threadBusCache,SIGNAL(signalBusCacheChange(BusCacheMessage)),threadCPU1,SLOT(hearBusCache(BusCacheMessage)));
+    QObject::connect(threadBusCache,SIGNAL(signalBusCacheChange(BusCacheMessage)),threadCPU2,SLOT(hearBusCache(BusCacheMessage)));
+    QObject::connect(threadBusCache,SIGNAL(signalBusCacheChange(BusCacheMessage)),threadCPU3,SLOT(hearBusCache(BusCacheMessage)));
 
     return a.exec();
 

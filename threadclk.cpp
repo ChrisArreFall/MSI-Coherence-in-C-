@@ -2,7 +2,7 @@
 
 ThreadCLK::ThreadCLK(QObject *parent) : QThread(parent)
 {
-    this->frequency = 1000;
+    this->frequency = 2000;
     this->clk = false;
 }
 
@@ -10,13 +10,22 @@ ThreadCLK::ThreadCLK(QObject *parent) : QThread(parent)
 void ThreadCLK::run()
 {
     while(1){
-        clk = !clk;
-        std::cout << "CLK: " << clk << std::endl;
-        if(clk){
-            mutex->lock();
-            this->clk0 = this->clk1 = this->clk2 = this->clk3 = true;
-            mutex->unlock();
+        if(state){
+            clk=!clk;
+            std::cout <<"CLK: "<< clk << std::endl;
+            emit signalCLK(clk);
         }
+        else{
+            clk=false;
+            std::cout <<"CLK: "<< clk << std::endl;
+            emit signalCLK(clk);
+        }
+
         msleep(frequency);
     }
+}
+
+void ThreadCLK::setState()
+{
+    this->state = !state;
 }

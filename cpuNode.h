@@ -19,8 +19,8 @@ public:
     void init(int id);
 
     //Los tres tipos de instruccion
-    string write(string data,string tag);
-    string read(string tag);
+    string write(int data,string tag);
+    string read(int data,string tag);
     void process();
 
     //Obtiene el cache (entero)
@@ -33,10 +33,7 @@ public:
     //Se le da un valor al bus de la RAM
     void setBusRAM(BusRAM *value);
 
-    //Obtiene el status del bus del Cache de la instancia del procesador
-    BusCache getBusCache() const;
-    //Se le da un valor al bus de el Cache
-    void setBusCache(BusCache *value);
+
 
 
 
@@ -45,12 +42,12 @@ public:
     QMutex *mutex;
 
     bool clock;
-private:
+
     int id;
     Cache cache;
 
     Instruction instruction;
-    BusCache *busCache;
+    BusCacheMessage *busCache;
     BusRAM *busRAM;
     bool writeBack = false;
     bool invalidation = false;

@@ -4,6 +4,8 @@
 #include "instruction.h"
 #include "memory.h"
 #include <QMutex>
+#include <unistd.h>
+#include <QThread>
 
 
 struct BusRAM
@@ -15,12 +17,12 @@ struct BusRAM
     bool enabled;
 };
 
-struct BusCache
+struct BusCacheMessage
 {
-    BusCache() : tag("XXXX"), status("null"), cpuId(-1) {}
+    BusCacheMessage() : id(100), tag("XXXX"), status("null") {}
+    int id;
     string tag;
     string status;
-    int cpuId;
 };
 
 class CacheController
@@ -28,14 +30,12 @@ class CacheController
 public:
     CacheController();
 
-    string cacheWrite(string tag, string data);
-    string cacheRead(string tag);
-    string hearCacheBus(BusCache *busCache);
+    string cacheWrite(string tag, int id);
+    string cacheRead(string tag,int id);
+    string hearCacheBus(BusCacheMessage busCacheMessage);
     Cache *getCache() const;
     void setCache(Cache *value);
 
-    BusCache *getBusCache() const;
-    void setBusCache(BusCache *value);
 
     BusRAM *getBusRAM() const;
     void setBusRAM(BusRAM *value);
@@ -48,10 +48,15 @@ public:
 
     Memory *memory;
 
+    BusCacheMessage busCacheMessage;
+
+    bool sendMessage;
+
+    void messageSent();
 
 private:
     Cache *cache;
-    BusCache *busCache;
+
     BusRAM *busRAM;
 };
 

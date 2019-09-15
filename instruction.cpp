@@ -65,5 +65,4 @@ void Instruction::generateType(int value, int tag)
         }
     }
     this->tag = binTag;
-    this->data = to_string(value);
 }

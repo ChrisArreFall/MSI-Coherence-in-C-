@@ -19,7 +19,7 @@ public:
 signals:
    void signalMean(int);
    void signalVar(int);
-   void signalStatus();
+   void setState();
 public slots:
     void setText(const QString &string);
 private slots:

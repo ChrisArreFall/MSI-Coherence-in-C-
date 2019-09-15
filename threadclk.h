@@ -12,10 +12,15 @@ public:
     explicit ThreadCLK(QObject *parent = nullptr);
     ulong frequency;
     bool clk;
-    bool clk0,clk1,clk2,clk3;
+    bool state = true;
     QMutex *mutex;
 protected:
     void run();
+signals:
+   void signalCLK(bool);
+public slots:
+   void setState();
+
 };
 
 #endif // THREADCLK_H

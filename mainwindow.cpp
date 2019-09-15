@@ -80,5 +80,5 @@ void MainWindow::on_varSlider_sliderMoved(int position)
 void MainWindow::on_startButton_clicked()
 {
     cout<<"Hello"<<endl;
-    emit signalStatus();
+    emit setState();
 }

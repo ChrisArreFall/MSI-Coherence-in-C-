@@ -2,9 +2,10 @@
 
 CacheController::CacheController()
 {
+    sendMessage = false;
 }
 
-string CacheController::cacheWrite(string tag, string data)
+string CacheController::cacheWrite(string tag, int id)
 {
     //Here we do care about the case where the tag is not in the cache
     //std::cout << "Started write..." << std::endl;
@@ -17,7 +18,7 @@ string CacheController::cacheWrite(string tag, string data)
                 //std::cout << "Modified..." << std::endl;
                 //If it is in the modified state, we can be sure no other processor has the tag in their cache
                 //that means we dont have to tell any other processors and we dont have to do anything.
-                this->cache->memory[i].data=data;
+                this->cache->memory[i].data=to_string(id);
                 return "foundModified";
             }
             else if (this->cache->memory[i].state=="invalid") {
@@ -25,13 +26,14 @@ string CacheController::cacheWrite(string tag, string data)
                 //If the block is in the invalid state we change it to modified state and put a
                 //write request in the cache bus to invalidate everyone else
                 this->cache->memory[i].state="modified";
-                this->cache->memory[i].data=data;
+                this->cache->memory[i].data=to_string(id);
                 //We also put a write request in the cache bus
                 //we have to take in consideration that is another processor has the
                 //data in an modified state then we have to first write back its data before we proceed.
-                this->busCache->tag = tag;
-                this->busCache->status = "write";
-                this->busCache->cpuId = this->cache->cpuId;
+
+                busCacheMessage.tag = tag;
+                busCacheMessage.status = "write";
+                sendMessage = true;
                 return "foundInvalid";
             }
             else if (this->cache->memory[i].state=="shared") {
@@ -39,13 +41,15 @@ string CacheController::cacheWrite(string tag, string data)
                 //If the block is in the shared state we change it to modified state and put a
                 //write request in the cache bus to invalidate everyone else
                 this->cache->memory[i].state="modified";
-                this->cache->memory[i].data=data;
+                this->cache->memory[i].data=to_string(id);
                 //We also put a write request in the cache bus
                 //we have to take in consideration that if another processor has the
                 //data in an modified or shared state then we have to make sure they know.
-                this->busCache->tag = tag;
-                this->busCache->status = "write";
-                this->busCache->cpuId = this->cache->cpuId;
+
+
+                busCacheMessage.tag = tag;
+                busCacheMessage.status = "write";
+                sendMessage = true;
                 return "foundShared";
             }
         }
@@ -53,30 +57,29 @@ string CacheController::cacheWrite(string tag, string data)
     //If the block is not in the cache we have to put a
     //write request in the cache bus to invalidate everyone else
     //std::cout << "Not in cache..." << std::endl;
-    this->busCache->tag = tag;
-    this->busCache->status = "write";
-    this->busCache->cpuId = this->cache->cpuId;
 
-    //we put the tag in the cache in a random place
-    std::normal_distribution<double> distributionTag(8,8);
-    int pos = (int)abs(distributionTag(generator));
-    while(pos>=8){
-        pos = (int)abs(distributionTag(generator));
-    }
+    busCacheMessage.tag = tag;
+    busCacheMessage.status = "write";
+    sendMessage = true;
+    //we put the tag in the cache in a %8 place
+    int pos = std::stoi(tag, nullptr, 2)%8;
+//arreglar esto para que se vea mejor
     if(cache->memory[pos].state=="modified"){
         //Emergency case
+        //mutex->lock();
         this->memory->writeBlock(cache->memory[pos].tag,cache->memory[pos].data);
+        //mutex->unlock();
         std::cout << "Pos in modified state! : "<<pos << std::endl;
     }
     std::cout << "Putting in cache in pos: "<< pos << std::endl;
     this->cache->memory[pos].state="modified";
-    this->cache->memory[pos].data=data;
+    this->cache->memory[pos].data=to_string(id);
     this->cache->memory[pos].tag=tag;
 
     return "notFound";
 }
 
-string CacheController::cacheRead(string tag)
+string CacheController::cacheRead(string tag, int id)
 {
     for(int i = 0;i<CACHE_SIZE;i++){
         if(this->cache->memory[i].tag==tag){
@@ -88,9 +91,11 @@ string CacheController::cacheRead(string tag)
             //If we want to do a local read and the block is in the invalid state
             else if(this->cache->memory[i].state=="invalid"){
                 //first we put a read request on the cache bus
-                this->busCache->tag = tag;
-                this->busCache->status = "read";
-                this->busCache->cpuId = cache->cpuId;
+                //mutex->lock();
+
+                busCacheMessage.tag = tag;
+                busCacheMessage.status = "read";
+                sendMessage = true;
                 //then we fetch the data from the memory
                 //we have to first make sure every other CPU knows
                 this->busRAM->enabled = true;
@@ -103,24 +108,23 @@ string CacheController::cacheRead(string tag)
     }
     //If we did no find it in cache, that means we
     //first put a read request on the cache bus
-    this->busCache->tag = tag;
-    this->busCache->status = "read";
-    this->busCache->cpuId = cache->cpuId;
+
+    busCacheMessage.tag = tag;
+    busCacheMessage.status = "read";
+    sendMessage = true;
     //then we fetch the data from the memory
     //we have to first make sure every other CPU knows
     this->busRAM->enabled = true;
     this->busRAM->tag = tag;
     this->busRAM->action = "read";
-    //we put the tag in the cache in a random place
-    std::normal_distribution<double> distributionTag(8,8);
-    int pos = (int)abs(distributionTag(generator));
-    while(pos>=8){
-        pos = (int)abs(distributionTag(generator));
-        std::cout << "Stuck here!" << std::endl;
-    }
+    //we put the tag in the cache in a %8 place
+    int pos = std::stoull(tag, 0, 2)%8;
+    cout << "POSITION: "<<pos <<", "<<tag<<"------"<< endl;
     if(cache->memory[pos].state=="modified"){
         //Emergency case
+        //mutex->lock();
         this->memory->writeBlock(cache->memory[pos].tag,cache->memory[pos].data);
+        //mutex->unlock();
         std::cout << "Pos in modified state! : "<<pos << std::endl;
     }
     this->cache->memory[pos].tag = tag;
@@ -129,7 +133,7 @@ string CacheController::cacheRead(string tag)
     return "notFound";
 }
 
-string CacheController::hearCacheBus(BusCache *busCache)
+string CacheController::hearCacheBus(BusCacheMessage busCacheMessage)
 {
     //Here we dont care about the case where the tag is not in the cache because
     //if its not in our cache it means we dont need it or we havent used it.
@@ -138,10 +142,11 @@ string CacheController::hearCacheBus(BusCache *busCache)
 
     //If in the cache bus, we hear that another cpuNode put a write in the bus
     //then we have to see if we have that tag in our cache
-    if(busCache->status=="write" && busCache->cpuId!=this->cache->cpuId){
+
+    if(busCacheMessage.status=="write"){
         for(int i = 0;i<CACHE_SIZE;i++){
             //if we do have that tag in our cache
-            if(this->cache->memory[i].tag==busCache->tag){
+            if(this->cache->memory[i].tag==busCacheMessage.tag){
                 //and if we have the block in the modified state
                 if(this->cache->memory[i].state=="modified"){
                     //we put the block in the invalid state
@@ -169,10 +174,10 @@ string CacheController::hearCacheBus(BusCache *busCache)
         }
         return "There was a WB, we did not have the tag in our cache.";
     }
-    else if(busCache->status=="read" && busCache->cpuId!=this->cache->cpuId){
+    else if(busCacheMessage.status=="read"){
         for(int i = 0;i<CACHE_SIZE;i++){
             //if we do have that tag in our cache
-            if(this->cache->memory[i].tag==busCache->tag){
+            if(this->cache->memory[i].tag==busCacheMessage.tag){
                 //and if we have the block in the modified state
                 if(this->cache->memory[i].state=="modified"){
                     //we put the block in the shared state
@@ -213,15 +218,7 @@ void CacheController::setCache(Cache *value)
     cache = value;
 }
 
-BusCache *CacheController::getBusCache() const
-{
-    return busCache;
-}
 
-void CacheController::setBusCache(BusCache *value)
-{
-    busCache = value;
-}
 
 BusRAM *CacheController::getBusRAM() const
 {
@@ -241,3 +238,10 @@ string CacheController::printCache()
     }
     return output;
 }
+
+void CacheController::messageSent()
+{
+    sendMessage = false;
+}
+
+
