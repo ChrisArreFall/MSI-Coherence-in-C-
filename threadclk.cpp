@@ -2,7 +2,7 @@
 
 ThreadCLK::ThreadCLK(QObject *parent) : QThread(parent)
 {
-    this->frequency = 2000;
+    this->frequency = 4000;
     this->clk = false;
 }
 

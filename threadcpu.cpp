@@ -4,7 +4,7 @@ ThreadCPU::ThreadCPU(QObject *parent) : QThread(parent)
 {
     mean = 50;
     variance = 100;
-    state = true;
+    state = false;
 }
 
 void ThreadCPU::accessMemory(){
@@ -82,6 +82,7 @@ void ThreadCPU::run()
     std::default_random_engine gen(rd());
 
     int iter = 0;
+    sleep(3);
     while(1){
         if(clk){
             mutex->lock();
@@ -89,7 +90,7 @@ void ThreadCPU::run()
             std::normal_distribution<double> d(mean, variance);
             int randValue = (int)d(gen)%100;
             std::normal_distribution<double> d2(8, 8);
-            int randTag = (int)d2(gen)%16;
+            int randTag = ((int)d2(gen)+id)%16;
             instruction->generateType(randValue,abs(randTag));
             string type = instruction->getType();
             string data = to_string(id);
@@ -101,6 +102,9 @@ void ThreadCPU::run()
                 cout << "Change in cache bus: " << cpu->cacheController.busCacheMessage.tag <<", " << cpu->cacheController.busCacheMessage.status << endl;
                 emit signalWriteToBus(cpu->cacheController.busCacheMessage);
             }
+            mutex->unlock();
+            sleep(1);
+            mutex->lock();
             accessMemory();
             cout  << " -------------------------------------------------"<< endl;
             mutex->unlock();
@@ -134,6 +138,7 @@ void ThreadCPU::hearBusCache(BusCacheMessage message)
         string hearCacheBusOutput = this->cpu->cacheController.hearCacheBus(message);
         std::cout << "hearCacheBus Output: " << hearCacheBusOutput << std::endl;
         string outputCache = to_string(this->cpu->id)+"0"+this->cpu->cacheController.printCache();
+        accessMemory();
         emit signalGUI(QString::fromStdString(outputCache));
         emit signalGUI(QString::fromStdString(memory->printMemory()));
     }

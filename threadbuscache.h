@@ -10,6 +10,7 @@ class ThreadBusCache : public QThread
     Q_OBJECT
 public:
     explicit ThreadBusCache(QObject *parent = nullptr);
+    BusCacheMessage currentMessage;
 protected:
     void run();
 

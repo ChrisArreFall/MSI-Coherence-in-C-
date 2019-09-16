@@ -185,8 +185,9 @@ string CacheController::hearCacheBus(BusCacheMessage busCacheMessage)
                     //and we write to memory because its the most recent value of the data
                     this->busRAM->tag=this->cache->memory[i].tag;
                     this->busRAM->data=this->cache->memory[i].data;
-                    this->busRAM->action="read";
+                    this->busRAM->action="write";
                     this->busRAM->enabled = true;
+
                     //we have to access the memory and let it know to write that data
                     return "There was a READ, we had that tag in our cache, it was in modified state.";
                 }
