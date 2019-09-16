@@ -41,7 +41,6 @@ public:
 
     QMutex *mutex;
 
-    bool clock;
 
     int id;
     Cache cache;
@@ -49,9 +48,6 @@ public:
     Instruction instruction;
     BusCacheMessage *busCache;
     BusRAM *busRAM;
-    bool writeBack = false;
-    bool invalidation = false;
-    bool readBack = false;
 
 
 };
